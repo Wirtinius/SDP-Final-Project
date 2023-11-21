@@ -7,7 +7,7 @@ import org.example.Factory.TaskAbstractFactory;
 
 public class EasyTaskFactory extends TaskAbstractFactory {
     @Override
-    public Task createTask(String name, String description, Integer priority, String deadline) {
-        return new EasyDecorator(new BasicTask(name, description, priority, deadline));
+    public Task createTask(String name, String description, Integer priority) {
+        return new EasyDecorator(new BasicTask(name, description, priority, "Easy"));
     }
 }

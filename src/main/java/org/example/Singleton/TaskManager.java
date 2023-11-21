@@ -1,16 +1,14 @@
 package org.example.Singleton;
 
-import org.example.Factory.BasicTask;
 import org.example.Factory.Task;
 import org.example.Observer.Observable;
 import org.example.Observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
-// Singleton для управления регистрацией студентов
 public class TaskManager implements Observable {
     private static TaskManager instance;
-    private List<BasicTask> tasks;
+    private List<Task> tasks;
 
     private TaskManager() {
         tasks = new ArrayList<>();
@@ -23,7 +21,7 @@ public class TaskManager implements Observable {
         return instance;
     }
 
-    public void addTask(BasicTask task) {
+    public void addTask(Task task) {
         tasks.add(task);
         notifyObservers("New task created: " + task.getName());
     }
@@ -46,4 +44,5 @@ public class TaskManager implements Observable {
             observer.update(action);
         }
     }
+
 }

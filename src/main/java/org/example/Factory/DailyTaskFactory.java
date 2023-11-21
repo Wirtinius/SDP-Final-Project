@@ -6,7 +6,7 @@ import org.example.Factory.TaskAbstractFactory;
 
 public class DailyTaskFactory extends TaskAbstractFactory {
     @Override
-    public Task createTask(String name, String description, Integer priority, String deadline) {
-        return new DailyDecorator(new BasicTask(name, description, priority, deadline));
+    public Task createTask(String name, String description, Integer priority) {
+        return new DailyDecorator(new BasicTask(name, description, priority, "Daily"));
     }
 }

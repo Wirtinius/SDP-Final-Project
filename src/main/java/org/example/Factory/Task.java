@@ -4,7 +4,6 @@ public interface Task {
     public abstract String getName();
     public abstract String getDescription();
     public abstract int getPriority();
-    public abstract String getDeadline();
     public abstract boolean isCompleted();
     public abstract String getType();
 

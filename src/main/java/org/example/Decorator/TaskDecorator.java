@@ -26,11 +26,6 @@ public abstract class TaskDecorator implements Task {
     }
 
     @Override
-    public String getDeadline() {
-        return decoratedTask.getDeadline();
-    }
-
-    @Override
     public boolean isCompleted() {
         return decoratedTask.isCompleted();
     }
