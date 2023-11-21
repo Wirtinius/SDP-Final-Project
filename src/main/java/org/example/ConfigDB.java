@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.Factory.BasicTask;
+import org.example.Factory.Task;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,13 +18,14 @@ public class ConfigDB {
     public static void saveTask(Task task) {
         try {
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            String sql = "INSERT INTO tasks (name, description, priority, deadline, is_completed) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO tasks (name, description, priority, deadline, type, is_completed) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, task.getName());
             statement.setString(2, task.getDeadline());
-             statement.setInt(3, task.getPriority());
+            statement.setInt(3, task.getPriority());
             statement.setString(4, task.getDescription());
-            statement.setBoolean(5, task.isCompleted());
+            statement.setString(5, task.getType());
+            statement.setBoolean(6, task.isCompleted());
 
             int rows = statement.executeUpdate();
             if (rows > 0) {
@@ -48,7 +52,9 @@ public class ConfigDB {
                  Integer priority = result.getInt("priority");
                  String deadline = result.getString("deadline");
                  Boolean isCompleted = result.getBoolean("is_completed");
+                 String type = result.getString("type");
                  String created_time_str = result.getString("created_time_str");
+
 
                  System.out.println(name + "\t\t" + description + "\t\t" + priority + "\t\t" + deadline + "\t\t" + isCompleted + "\t\t" + created_time_str);
              }
@@ -61,31 +67,31 @@ public class ConfigDB {
      }
 
 
-    public static List<Task> getTaskList() {
-        List<Task> tasks = new ArrayList<>();
-        try {
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-
-            String sql = "SELECT * FROM tasks";
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                String name = result.getString("name");
-                String description = result.getString("description");
-                Integer priority = result.getInt("priority");
-                String deadline = result.getString("deadline");
-                Task task = new Task(name, description, priority, deadline);
-                tasks.add(task);
-            }
-
-            result.close();
-            statement.close();
-            connection.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return tasks;
-    }
+//    public static List<Task> getTaskList() {
+//        List<Task> tasks = new ArrayList<>();
+//        try {
+//            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+//
+//            String sql = "SELECT * FROM tasks";
+//            PreparedStatement statement = connection.prepareStatement(sql);
+//
+//            ResultSet result = statement.executeQuery();
+//            while (result.next()) {
+//                String name = result.getString("name");
+//                String description = result.getString("description");
+//                Integer priority = result.getInt("priority");
+//                String deadline = result.getString("deadline");
+//                Task task = new BasicTask(name, description, priority, deadline);
+//                tasks.add(task);
+//            }
+//
+//            result.close();
+//            statement.close();
+//            connection.close();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return tasks;
+//    }
 
 }

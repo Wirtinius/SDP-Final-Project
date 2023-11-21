@@ -1,11 +1,16 @@
-package org.example;
+package org.example.Singleton;
+
+import org.example.Factory.BasicTask;
+import org.example.Factory.Task;
+import org.example.Observer.Observable;
+import org.example.Observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
 // Singleton для управления регистрацией студентов
-public class TaskManager {
+public class TaskManager implements Observable {
     private static TaskManager instance;
-    private List<Task> tasks;
+    private List<BasicTask> tasks;
 
     private TaskManager() {
         tasks = new ArrayList<>();
@@ -18,24 +23,26 @@ public class TaskManager {
         return instance;
     }
 
-    public void addTask(Task task) {
+    public void addTask(BasicTask task) {
         tasks.add(task);
         notifyObservers("New task created: " + task.getName());
     }
 
     // Паттерн Observer
-    private List<TaskNotify> observers = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
 
-    public void addObserver(TaskNotify observer) {
+    @Override
+    public void addObserver(Observer observer) {
         observers.add(observer);
     }
 
-    public void removeObserver(TaskNotify observer) {
+    @Override
+    public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
 
     public void notifyObservers(String action) {
-        for (TaskNotify observer : observers) {
+        for (Observer observer : observers) {
             observer.update(action);
         }
     }
