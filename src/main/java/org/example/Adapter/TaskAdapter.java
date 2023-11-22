@@ -9,6 +9,7 @@ public class TaskAdapter implements TaskAdapterInterface {
         this.task = task;
     }
 
+
     @Override
     public boolean isCompleted() {
         return true;

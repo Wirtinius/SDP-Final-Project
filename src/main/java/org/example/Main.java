@@ -50,6 +50,7 @@ import org.example.Observer.TaskNotify;
 import org.example.Singleton.TaskManager;
 import org.example.Strategy.ComplexTaskStrategy;
 import org.example.Strategy.DailyTaskStrategy;
+import org.example.Strategy.EasyTaskStrategy;
 import org.example.Strategy.TaskCompletionStrategy;
 
 import java.util.List;
@@ -69,7 +70,8 @@ public class Main {
             System.out.println("2. Create Easy Task");
             System.out.println("3. Create Complex Task");
             System.out.println("4. List All Tasks");
-            System.out.println("5. Exit");
+            System.out.println("5. List one specific Task");
+            System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -77,18 +79,21 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    createAndSaveTask(new DailyTaskFactory(), taskManager, scanner, new TaskNotify().update(new ComplexTaskStrategy()));
+                    createAndSaveTask(new DailyTaskFactory(), taskManager, scanner, new TaskNotify().update(new DailyTaskStrategy().execute()));
                     break;
                 case 2:
-                    createAndSaveTask(new EasyTaskFactory(), taskManager, scanner, new TaskNotify().update(new ComplexTaskStrategy()));
+                    createAndSaveTask(new EasyTaskFactory(), taskManager, scanner, new TaskNotify().update(new EasyTaskStrategy().execute()));
                     break;
                 case 3:
-                    createAndSaveTask(new ComplexTaskFactory(), taskManager, scanner, new TaskNotify().update(new ComplexTaskStrategy()));
+                    createAndSaveTask(new ComplexTaskFactory(), taskManager, scanner, new TaskNotify().update(new ComplexTaskStrategy().execute()));
                     break;
                 case 4:
                     listTasks(tasksFromDatabase);
                     break;
                 case 5:
+                    GetOneTask(scanner);
+                    break;
+                case 6:
                     exit = true;
                     break;
                 default:
@@ -111,6 +116,12 @@ public class Main {
 
     }
 
+    private static void GetOneTask(Scanner scanner) {
+
+        Task task = ConfigDB.findTaskByName(readUserInput("Enter task name: ", scanner));
+        System.out.println( task.getName() + " | " + task.getDescription() + " | " + task.isCompleted() + " | ");
+    }
+
     private static String readUserInput(String prompt, Scanner scanner) {
         System.out.print(prompt);
         return scanner.nextLine();
@@ -131,7 +142,7 @@ public class Main {
         Integer count = 0;
         for (Task task : tasks) {
             count++;
-            System.out.println(count + " | " + task.getName() + " | " + task.getDescription() + " | " + task.isCompleted());
+            System.out.println(count + " | " + task.getName() + " | " + task.getDescription() + " | " + task.isCompleted() + " | ");
         }
     }
 

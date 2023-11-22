@@ -38,32 +38,6 @@ public class ConfigDB {
         }
     }
 
-     public static void getTasks() {
-
-         try {
-             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-
-             Statement statement = connection.createStatement();
-             ResultSet result = statement.executeQuery("SELECT * FROM  tasks");
-             while (result.next()) {
-                 String name = result.getString("name");
-                 String description = result.getString("description");
-                 Integer priority = result.getInt("priority");
-                 Boolean isCompleted = result.getBoolean("is_completed");
-                 String type = result.getString("type");
-                 String created_time_str = result.getString("created_time_str");
-
-
-                 System.out.println(name + "\t\t" + description + "\t\t" + priority + "\t\t"  + "\t\t" + isCompleted + "\t\t" + created_time_str);
-             }
-             connection.close();
-         }
-         catch (Exception ex) {
-             ex.printStackTrace();
-         }
-
-     }
-
 
     public static List<Task> getTaskList() {
         List<Task> tasks = new ArrayList<>();
@@ -78,6 +52,7 @@ public class ConfigDB {
                 String name = result.getString("name");
                 String description = result.getString("description");
                 Integer priority = result.getInt("priority");
+
                 Task task = new BasicTask(name, description, priority);
                 tasks.add(task);
             }
@@ -90,5 +65,35 @@ public class ConfigDB {
         }
         return tasks;
     }
+
+    public static Task findTaskByName(String taskName) {
+        Task task = null;
+        try {
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            String sql = "SELECT * FROM tasks WHERE name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, taskName);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // Assuming Task class has a constructor that takes ResultSet
+                task = new BasicTask(
+                        resultSet.getString("name"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("priority")
+                );
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return task;
+    }
+
 
 }
