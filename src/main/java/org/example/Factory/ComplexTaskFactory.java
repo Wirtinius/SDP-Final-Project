@@ -9,6 +9,6 @@ import org.example.Factory.TaskAbstractFactory;
 public class ComplexTaskFactory extends TaskAbstractFactory {
     @Override
     public Task createTask(String name, String description, Integer priority) {
-        return new ComplexDecorator(new BasicTask(name, description, priority, "Complex"));
+        return new ComplexDecorator(new BasicTask(name, description, priority));
     }
 }

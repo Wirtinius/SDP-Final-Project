@@ -78,7 +78,7 @@ public class ConfigDB {
                 String name = result.getString("name");
                 String description = result.getString("description");
                 Integer priority = result.getInt("priority");
-                Task task = new Task(name, description, priority);
+                Task task = new BasicTask(name, description, priority);
                 tasks.add(task);
             }
 

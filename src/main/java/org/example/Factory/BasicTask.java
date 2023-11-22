@@ -9,12 +9,11 @@ public class BasicTask implements Task {
 
 
 
-    public BasicTask(String name, String description, int priority, String type) {
+    public BasicTask(String name, String description, int priority) {
         this.name = name;
         this.description = description;
         this.priority = priority;
         this.completed = false;
-        this.type = type;
     }
 
     @Override
@@ -39,6 +38,6 @@ public class BasicTask implements Task {
 
     @Override
     public String getType() {
-        return type;
+        return null;
     }
 }

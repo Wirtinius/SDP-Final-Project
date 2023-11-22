@@ -48,7 +48,10 @@ package org.example;
 import org.example.Factory.*;
 import org.example.Observer.TaskNotify;
 import org.example.Singleton.TaskManager;
-import org.example.Strategy.DatabaseSaveStrategy;
+import org.example.Strategy.ComplexTaskStrategy;
+import org.example.Strategy.DailyTaskStrategy;
+import org.example.Strategy.TaskCompletionStrategy;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -57,7 +60,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         TaskManager taskManager = TaskManager.getInstance();
         taskManager.addObserver(new TaskNotify());
-        DatabaseSaveStrategy saver = new DatabaseSaveStrategy();
 
         List<Task> tasksFromDatabase = ConfigDB.getTaskList();
 
@@ -75,13 +77,13 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    createAndSaveTask(new DailyTaskFactory(), taskManager, saver, scanner);
+                    createAndSaveTask(new DailyTaskFactory(), taskManager, scanner, new TaskNotify().update(new ComplexTaskStrategy()));
                     break;
                 case 2:
-                    createAndSaveTask(new EasyTaskFactory(), taskManager, saver, scanner);
+                    createAndSaveTask(new EasyTaskFactory(), taskManager, scanner, new TaskNotify().update(new ComplexTaskStrategy()));
                     break;
                 case 3:
-                    createAndSaveTask(new ComplexTaskFactory(), taskManager, saver, scanner);
+                    createAndSaveTask(new ComplexTaskFactory(), taskManager, scanner, new TaskNotify().update(new ComplexTaskStrategy()));
                     break;
                 case 4:
                     listTasks(tasksFromDatabase);
@@ -98,14 +100,14 @@ public class Main {
     }
 
     private static void createAndSaveTask(TaskAbstractFactory taskFactory, TaskManager taskManager,
-                                          DatabaseSaveStrategy saver, Scanner scanner) {
+                                           Scanner scanner, TaskCompletionStrategy taskNotify) {
         Task task = taskFactory.createTask(
                 readUserInput("Enter task name: ", scanner),
                 readUserInput("Enter task description: ", scanner),
                 readUserInputInt("Enter task priority: ", scanner)
         );
-        taskManager.addTask(task);
-        saver.save(task);
+        taskManager.addTask(task, taskNotify);
+        ConfigDB.saveTask(task);
 
     }
 

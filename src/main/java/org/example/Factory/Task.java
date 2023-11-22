@@ -8,11 +8,6 @@ public interface Task {
     public abstract String getType();
 
 
-//    public void markAsCompleted() {
-//        this.isCompleted = true;
-//    }
-
-
 }
 
 

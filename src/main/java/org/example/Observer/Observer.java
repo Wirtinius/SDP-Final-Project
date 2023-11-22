@@ -1,6 +1,8 @@
 package org.example.Observer;
 
+import org.example.Strategy.TaskCompletionStrategy;
+
 public interface Observer {
-    public void update(String action);
+    public TaskCompletionStrategy update(TaskCompletionStrategy action);
 
 }

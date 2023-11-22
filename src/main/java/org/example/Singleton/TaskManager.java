@@ -3,6 +3,7 @@ package org.example.Singleton;
 import org.example.Factory.Task;
 import org.example.Observer.Observable;
 import org.example.Observer.Observer;
+import org.example.Strategy.TaskCompletionStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,9 @@ public class TaskManager implements Observable {
         return instance;
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task task, TaskCompletionStrategy taskNotify) {
         tasks.add(task);
-        notifyObservers("New task created: " + task.getName());
+        notifyObservers(taskNotify);
     }
 
     // Паттерн Observer
@@ -39,7 +40,8 @@ public class TaskManager implements Observable {
         observers.remove(observer);
     }
 
-    public void notifyObservers(String action) {
+    @Override
+    public void notifyObservers(TaskCompletionStrategy action) {
         for (Observer observer : observers) {
             observer.update(action);
         }
